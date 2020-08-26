@@ -1,24 +1,75 @@
 ---
-title: IAM user 기본 실습
-weight: 36
-pre: "<b>3-5-a. </b>"
+title: IAM role 기본 실습
+weight: 48
+pre: "<b>4-2-c. </b>"
 ---
 
 
-## IAM user 기본 생성
+## IAM role 기본 생성
 
-Terraform을 통해서 IAM user를 생성해보도록 하겠습니다. 
+Terraform을 통해서 IAM role을 생성해보도록 하겠습니다. 
 IAM User를 생성할 때는 `aws_iam_user`  리소스를 사용하면되고,  필수적으로 필요한 설정은 `name` 입니다.
 
 
 ```bash
-provider "aws" {
-  region  = "ap-northeast-2"
+resource "aws_iam_role" "app_hello" {
+  name               = "app-hello"
+  path               = "/"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
 }
 
-resource "aws_iam_user" "gildong_hong" {
-  name = "gildong.hong"
+resource "aws_iam_role_policy" "app_hello_s3" {
+  name   = "app-hello-s3-artifact-download"
+  role   = aws_iam_role.app_hello.id
+  policy = <<EOF
+{
+  "Statement": [
+    {
+      "Sid": "AllowAppArtifactsReadAccess",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "*"
+      ],
+      "Effect": "Allow"
+    }
+  ]
 }
+EOF
+
+}
+
+
+resource "aws_iam_instance_profile" "app_hello" {
+  name = "app-hello-profile"
+  role = aws_iam_role.app_hello.name
+}
+
+resource "aws_iam_role_policy_attachment" "app_hello_attach" {
+  role       = aws_iam_role.app_hello.name
+  policy_arn = aws_iam_policy.app_universal.arn
+}
+
+output "hello_instance_profile" {
+  value = aws_iam_instance_profile.app_hello.arn
+}
+
 ```
 
 Terraform Plan 명령어를 통해 생성되는 리소스를 확인합니다.
@@ -86,15 +137,3 @@ aws_iam_user.gildong_hong: Creation complete after 2s [id=gildong.hong]
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
-
-AWS Console을 통해 IAM user 가 올바르게 생성되었는지 확인합니다.
-
-{{% notice info %}}
-위 Terraform 코드를 통해 IAM user 를 생성해주었다고 하더라도, console 을 접속할 수 는 없습니다.
-생성한 user의 password 가 설정되어있지 않기 때문입니다.
-비밀번호와 MFA는 직접 console을 통해 설정해야합니다.
-혹은 AWS CLI 를 통해서 자동화를 진행할 수 도 있습니다.
-물론 테라폼을 통해 설정을 할 수 도 있으나, aws_iam_user_login_profile 을 사용해야합니다.
-해당 리소스는 AWS와 Terraform 중급 수준의 이해가 있어야 사용이 편합니다.
-{{% /notice %}}
-

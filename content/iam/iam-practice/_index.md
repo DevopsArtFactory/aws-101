@@ -1,8 +1,8 @@
 ---
 title: AWS IAM
-weight: 35
+weight: 4-2
 chapter: true
-pre: "<b>3-5. </b>"
+pre: "<b>4-2. </b>"
 ---
 
 ## IAM 소개

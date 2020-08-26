@@ -9,7 +9,7 @@ canonifyURLs=false
 enableGitInfo = true
 
 [params]
-  description = "Documentation for Hugo Learn Theme"
+  description = "AWS 101 with DevopsArt"
   disableBreadcrumb = false
   disableNextPrev = false
   themeVariant = "mine"

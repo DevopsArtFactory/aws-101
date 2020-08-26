@@ -1,7 +1,7 @@
 ---
 title: Amazon S3 소개
-weight: 33
-pre: "<b>3-3. </b>"
+weight: 53
+pre: "<b>5-1. </b>"
 ---
 ## Amazon S3 소개
 

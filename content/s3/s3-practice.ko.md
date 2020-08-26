@@ -1,7 +1,7 @@
 ---
 title: Amazon S3 실습
-weight: 34
-pre: "<b>3-4. </b>"
+weight: 54
+pre: "<b>5-2. </b>"
 ---
 
 ## S3 Bucket 생성

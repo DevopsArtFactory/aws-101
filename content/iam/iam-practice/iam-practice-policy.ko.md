@@ -1,7 +1,7 @@
 ---
 title: IAM policy 기본 실습
-weight: 40
-pre: "<b>3-5-c. </b>"
+weight: 50
+pre: "<b>4-2-c. </b>"
 ---
 
 

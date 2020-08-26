@@ -1,7 +1,7 @@
 ---
 title: IAM group 기본 실습
-weight: 37
-pre: "<b>3-5-b. </b>"
+weight: 47
+pre: "<b>4-2-b. </b>"
 ---
 
 {{% notice info %}}
